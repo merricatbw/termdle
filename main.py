@@ -2,6 +2,21 @@ from typing import NewType
 import curses
 import random
 
+class Box:
+    def __init__(self, x: int, y: int):
+        self.x = x
+        self.y = y
+        self.value = " "
+        
+    def draw_self(self, screen: curses._CursesWindow):
+        screen.addstr(self.x, self.y, "---")
+        screen.addstr(self.x + 1, self.y, "|" + self.value + "|")
+        screen.addstr(self.x + 2, self.y, "---")
+
+#constants
+TITLE = "TERMDLE"
+
+
 # ComparisonCheck is a comparison of two Word types
 # each integer corrisponds to the letter index of the words that are being copared
 # if the letters don't compare then the integer should be 0
@@ -10,19 +25,29 @@ import random
 ComparisonCheck = NewType('ComparisonCheck', tuple[int, int, int, int, int])
 Word = NewType('Word', tuple[str, str, str, str, str])
 
+
+
+
 def main() -> None:
-    
     screen = curses.initscr()
     screen.refresh()
     width = curses.COLS
-    screen.addstr(0, int(width/2) - int(7 / 2), "TERMDLE")
+    screen.addstr(
+        0,
+        find_horizontal_centre(TITLE, width),
+        TITLE
+        )
     screen.refresh()
     curses.napms(2000)
 
     word = get_word()
     
     curses.endwin()
-
+    
+def find_horizontal_centre(string: str, width: int) -> int:
+    word_length = len(string)
+    return int(width / 2) - int(word_length / 2)
+    
 def get_word() -> Word:
     random_number = random.randrange(0, 14954)
     word = ""
