@@ -10,13 +10,18 @@ import random
 ComparisonCheck = NewType('ComparisonCheck', tuple[int, int, int, int, int])
 Word = NewType('Word', tuple[str, str, str, str, str])
 
-def main():
+def main() -> None:
+    
+    screen = curses.initscr()
+    screen.refresh()
+    width = curses.COLS
+    screen.addstr(0, int(width/2) - int(7 / 2), "TERMDLE")
+    screen.refresh()
+    curses.napms(2000)
+
     word = get_word()
-    print(word)
-    print(compare_words(
-        str_to_word("dafty"),
-        str_to_word("dylpy"),
-    ))
+    
+    curses.endwin()
 
 def get_word() -> Word:
     random_number = random.randrange(0, 14954)
